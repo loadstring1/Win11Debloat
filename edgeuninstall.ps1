@@ -20,7 +20,7 @@ if ((Get-AppxPackage -Name "*Microsoft.DesktopAppInstaller*") -and ((winget -v) 
     Write-Output "Looks like you don't have winget installed or your winget version is outdated. Attempting to remove microsoft edge without winget forcefully."
 }
 
-Stop-Process -Name "*edge*"
+Stop-Process -Name "*edge*" -Force
 Write-Output "Attempted to kill all microsoft edge processes"
 
 # I don't know how these hashes work. I assume those update once microsoft edge updates that will be tons of pain keeping this edge remove function up to date - loadstring1
@@ -112,10 +112,8 @@ Write-Output "Attempted to remove microsoft edge from services"
 
 #remove leftover tasks
 Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateBrowserReplacementTask -Confirm:$false
-Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineCore{BEB567CF-A378-44A2-9578-89A3E235F394}" -Confirm:$false
-Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUA{6D47D77D-DBC2-48D8-9FFC-1346D07E2E8F}" -Confirm:$false
-Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskUserS-1-5-21-2471683600-1030039023-3519664427-1001Core{8205FAB3-AD34-4E03-A2E1-5092347ADEDA}" -Confirm:$false
-Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskUserS-1-5-21-2471683600-1030039023-3519664427-1001UA{ECB907F8-E033-4A73-A66C-8DC70865C0F5}" -Confirm:$false
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineCore -Confirm:$false
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineUA -Confirm:$false
 
 Write-Output "Attempted to remove microsoft edge from task scheduler"
 
@@ -132,6 +130,7 @@ $edgePaths=@(
     "$env:ProgramData\Microsoft\EdgeUpdate",
     "$env:ProgramData\Microsoft\Windows\Start Menu\Programs\Microsoft Edge.lnk",
     "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\Microsoft Edge.lnk",
+    "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar\Microsoft Edge.lnk"
     "$env:PUBLIC\Desktop\Microsoft Edge.lnk"
 )
 foreach ($path in $edgePaths){
