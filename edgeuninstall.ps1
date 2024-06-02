@@ -103,6 +103,22 @@ reg delete "HKEY_CURRENT_USER\Software\Classes\Local Settings\Software\Microsoft
 
 Write-Output "Attempted to remove microsoft edge from registry"
 
+#remove leftover services
+sc.exe delete "edgeupdate"
+sc.exe delete "edgeupdatem"
+sc.exe delete "MicrosoftEdgeElevationService"
+
+Write-Output "Attempted to remove microsoft edge from services"
+
+#remove leftover tasks
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateBrowserReplacementTask -Confirm:$false
+Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineCore{BEB567CF-A378-44A2-9578-89A3E235F394}" -Confirm:$false
+Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskMachineUA{6D47D77D-DBC2-48D8-9FFC-1346D07E2E8F}" -Confirm:$false
+Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskUserS-1-5-21-2471683600-1030039023-3519664427-1001Core{8205FAB3-AD34-4E03-A2E1-5092347ADEDA}" -Confirm:$false
+Unregister-ScheduledTask -TaskName "MicrosoftEdgeUpdateTaskUserS-1-5-21-2471683600-1030039023-3519664427-1001UA{ECB907F8-E033-4A73-A66C-8DC70865C0F5}" -Confirm:$false
+
+Write-Output "Attempted to remove microsoft edge from task scheduler"
+
 $ProgramFiles86=${env:ProgramFiles(x86)}
 
 $edgePaths=@(
