@@ -1,6 +1,5 @@
 Write-Output "Edge uninstaller v1.1 - made by loadstring1"
 
-
 #give it a chance to uninstall itself before doing it forcefully
 
 if ((Get-AppxPackage -Name "*Microsoft.DesktopAppInstaller*") -and ((winget -v) -replace 'v','' -gt 1.4)) {
@@ -111,9 +110,9 @@ sc.exe delete "MicrosoftEdgeElevationService"
 Write-Output "Attempted to remove microsoft edge from services"
 
 #remove leftover tasks
-Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateBrowserReplacementTask -Confirm:$false
-Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineCore -Confirm:$false
-Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineUA -Confirm:$false
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateBrowserReplacementTask -Confirm:$false -ErrorAction SilentlyContinue
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineCore -Confirm:$false -ErrorAction SilentlyContinue
+Unregister-ScheduledTask -TaskName MicrosoftEdgeUpdateTaskMachineUA -Confirm:$false -ErrorAction SilentlyContinue
 
 Write-Output "Attempted to remove microsoft edge from task scheduler"
 
@@ -141,7 +140,6 @@ foreach ($path in $edgePaths){
         Write-Output "$path doesn't exist. No action was taken."
     }
 }
-
 
 Write-Output "Microsoft edge should be removed from your system."
 Write-Output "Please keep in mind microsoft edge webview has not been uninstalled. You can uninstall that in settings or control panel."
